@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function($router){
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+});
 
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => 'api'], function(){
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::post('drivers', [DriverController::class, 'store']);

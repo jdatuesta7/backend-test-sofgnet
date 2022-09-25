@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RouteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     public function index()
     {
         try {
