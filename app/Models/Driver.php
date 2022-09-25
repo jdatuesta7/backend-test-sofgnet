@@ -16,6 +16,7 @@ class Driver extends Model
     public function vehicles()
     {
         return $this->belongsToMany(Vehicle::class)
+            ->using(DriverVehicle::class)
             ->withPivot('id', 'description', 'driver_id', 'vehicle_id', 'active');
     }
 }

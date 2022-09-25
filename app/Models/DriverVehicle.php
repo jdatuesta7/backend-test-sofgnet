@@ -8,6 +8,8 @@ class DriverVehicle extends Pivot
 {
     const REMOVE = 0;
     const PUBLISH = 1;
+
+    public $timestamps = false;
     
     public function schedules()
     {

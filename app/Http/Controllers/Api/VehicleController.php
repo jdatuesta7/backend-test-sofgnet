@@ -82,7 +82,7 @@ class VehicleController extends Controller
             $vehicle = Vehicle::findOrFail($id);
             $vehicle->active = Vehicle::REMOVE;
             $vehicle->save();
-            return Response($vehicle, Response::HTTP_OK);
+            return Response(["message" => "Vehiculo eliminado correctamente"], Response::HTTP_OK);
         } catch (Exception $e) {
             return Response(['error' => $e->getMessage()], 500);
         }
