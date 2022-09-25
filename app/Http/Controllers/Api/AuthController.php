@@ -44,6 +44,7 @@ class AuthController extends Controller
             ]);
 
             if (Auth::attempt($credentials)) {
+                /** @var \App\Models\MyUserModel $user **/
                 $user = Auth::user();
                 $token = $user->createToken('token')->plainTextToken;
                 $cookie = cookie('cookie_user_token', $token, 60 * 24);
@@ -62,7 +63,11 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $cookie = Cookie::forget('cookie_user_token');
-        return response(["message" => "se ha cerrado la sesión"], Response::HTTP_OK)->withCookie($cookie);
+        try {
+            $cookie = Cookie::forget('cookie_user_token');
+            return response(["message" => "se ha cerrado la sesión"], Response::HTTP_OK)->withCookie($cookie);
+        } catch (Exception $e) {
+            return response(['error' => $e->getMessage()], 500);
+        }
     }
 }
