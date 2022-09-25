@@ -23,7 +23,7 @@ class CreateDriverVehicleTable extends Migration
             $table->unsignedBigInteger('vehicle_id');
             $table->foreign('vehicle_id')->references('id')->on('vehicles');
 
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
         });
     }
 

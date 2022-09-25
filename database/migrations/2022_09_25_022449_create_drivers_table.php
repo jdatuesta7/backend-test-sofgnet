@@ -23,7 +23,7 @@ class CreateDriversTable extends Migration
             $table->string('city')->nullable();
             $table->string('zip')->nullable();
             $table->integer('phone')->nullable();
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
         });
     }
 

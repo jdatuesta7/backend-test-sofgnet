@@ -22,7 +22,7 @@ class CreateSchedulesTable extends Migration
             $table->integer('week_num');
             $table->dateTime('from');
             $table->dateTime('to');
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
         });
     }
 

@@ -19,7 +19,7 @@ class CreateVehiclesTables extends Migration
             $table->year('year');
             $table->integer('make');
             $table->integer('capacity');
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
         });
     }
 
