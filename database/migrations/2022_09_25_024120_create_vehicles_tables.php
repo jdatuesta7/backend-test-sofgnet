@@ -18,7 +18,7 @@ class CreateVehiclesTables extends Migration
             $table->id();
             $table->string('description');
             $table->year('year');
-            $table->integer('make');
+            $table->string('make');
             $table->integer('capacity');
             $table->boolean('active')->default(Vehicle::PUBLISH);
         });

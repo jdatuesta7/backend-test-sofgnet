@@ -26,7 +26,7 @@ class VehicleController extends Controller
             $validated = $request->validate([
                 'description' => 'required|string',
                 'year' => 'required|integer',
-                'make' => 'required|integer',
+                'make' => 'required|string',
                 'capacity' => 'required|integer' 
             ]);
 
@@ -59,7 +59,7 @@ class VehicleController extends Controller
             $validated = $request->validate([
                 'description' => 'required|string',
                 'year' => 'required|integer',
-                'make' => 'required|integer',
+                'make' => 'required|string',
                 'capacity' => 'required|integer',
             ]);
 
