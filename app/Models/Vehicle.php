@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
+    const REMOVE = 0;
+    const PUBLISH = 1;
+    
     protected $fillable = ['description', 'year', 'make', 'capacity', 'active'];
+
+    public $timestamps = false;
 
     public function drivers()
     {
