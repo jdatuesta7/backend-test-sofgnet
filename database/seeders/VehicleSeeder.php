@@ -15,9 +15,9 @@ class VehicleSeeder extends Seeder
     public function run()
     {
         $vehicles = [
-            1 => ["transportes masivos de personas", 2018, 4, 120],
-            2 => ["transportes de maquinaria pesada", 2014, 3, 3],
-            3 => ["transportes VIP", 2022, 8, 12]
+            1 => ["transportes masivos de personas", 2018, "MK2122", 120],
+            2 => ["transportes de maquinaria pesada", 2014, "ZT046", 3],
+            3 => ["transportes VIP", 2022, "PS341", 12]
         ];
 
         foreach ($vehicles as $vehicle) {
