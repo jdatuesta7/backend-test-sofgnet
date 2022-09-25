@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DriverController;
 use App\Http\Controllers\Api\RouteController;
+use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +41,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('routes/{route}', [RouteController::class, 'show']);
     Route::put('routes/{route}', [RouteController::class, 'update']);
     Route::delete('routes/{route}', [RouteController::class, 'delete']);
+
+    Route::post('schedules', [ScheduleController::class, 'store']);
 });
