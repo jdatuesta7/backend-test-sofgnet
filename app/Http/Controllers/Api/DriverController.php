@@ -72,8 +72,7 @@ class DriverController extends Controller
                 'address' => 'string|nullable',
                 'city' => 'string|nullable',
                 'zip' => 'string|nullable',
-                'phone' => 'integer|nullable',
-                'active' => 'boolean|nullable'
+                'phone' => 'integer|nullable'
             ]);
 
             $driver = Driver::findOrFail($id);
@@ -85,7 +84,6 @@ class DriverController extends Controller
             $driver->city = $validated['city'];
             $driver->zip = $validated['zip'];
             $driver->phone = $validated['phone'];
-            $driver->active = $validated['active'];
             $driver->save();
             
             return Response($driver, Response::HTTP_OK);
