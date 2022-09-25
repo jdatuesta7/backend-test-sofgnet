@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Vehicle;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ class CreateVehiclesTables extends Migration
             $table->year('year');
             $table->integer('make');
             $table->integer('capacity');
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(Vehicle::PUBLISH);
         });
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\DriverVehicle;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ class CreateDriverVehicleTable extends Migration
             $table->unsignedBigInteger('vehicle_id');
             $table->foreign('vehicle_id')->references('id')->on('vehicles');
 
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(DriverVehicle::PUBLISH);
         });
     }
 

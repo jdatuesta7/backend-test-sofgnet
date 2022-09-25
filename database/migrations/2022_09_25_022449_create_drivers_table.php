@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Driver;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ class CreateDriversTable extends Migration
             $table->string('city')->nullable();
             $table->string('zip')->nullable();
             $table->string('phone')->nullable();
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(Driver::PUBLISH);
         });
     }
 

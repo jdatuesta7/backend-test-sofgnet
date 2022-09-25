@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Schedule;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +23,7 @@ class CreateSchedulesTable extends Migration
             $table->integer('week_num');
             $table->dateTime('from');
             $table->dateTime('to');
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(Schedule::PUBLISH);
         });
     }
 
