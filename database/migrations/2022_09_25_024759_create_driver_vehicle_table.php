@@ -16,7 +16,7 @@ class CreateDriverVehicleTable extends Migration
     {
         Schema::create('driver_vehicle', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->longText('description');
 
             $table->unsignedBigInteger('driver_id');
             $table->foreign('driver_id')->references('id')->on('drivers');

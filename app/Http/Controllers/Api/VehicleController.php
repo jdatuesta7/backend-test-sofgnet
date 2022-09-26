@@ -77,7 +77,7 @@ class VehicleController extends Controller
                 return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
 
-            $vehicle = new Vehicle();
+            $vehicle = Vehicle::findOrFail($id);
             $vehicle->description = $request->description;
             $vehicle->year = $request->year;
             $vehicle->make = $request->make;
