@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class VehicleController extends Controller
@@ -18,7 +19,7 @@ class VehicleController extends Controller
     public function index()
     {
         try {
-            $vehicles = Vehicle::all();
+            $vehicles = Vehicle::where('active', VEHICLE::PUBLISH)->get();
             return Response($vehicles, Response::HTTP_OK);
         } catch (Exception $e) {
             return Response(['error' => $e->getMessage()], 500);
@@ -28,18 +29,22 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'description' => 'required|string',
                 'year' => 'required|integer',
                 'make' => 'required|string',
                 'capacity' => 'required|integer' 
             ]);
 
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
             $vehicle = new Vehicle();
-            $vehicle->description = $validated['description'];
-            $vehicle->year = $validated['year'];
-            $vehicle->make = $validated['make'];
-            $vehicle->capacity = $validated['capacity'];
+            $vehicle->description = $request->description;
+            $vehicle->year = $request->year;
+            $vehicle->make = $request->make;
+            $vehicle->capacity = $request->capacity;
             $vehicle->save();
 
             return Response($vehicle, Response::HTTP_CREATED);
@@ -61,18 +66,22 @@ class VehicleController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'description' => 'required|string',
                 'year' => 'required|integer',
                 'make' => 'required|string',
-                'capacity' => 'required|integer',
+                'capacity' => 'required|integer' 
             ]);
 
-            $vehicle = Vehicle::findOrFail($id);
-            $vehicle->description = $validated['description'];
-            $vehicle->year = $validated['year'];
-            $vehicle->make = $validated['make'];
-            $vehicle->capacity = $validated['capacity'];
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
+            $vehicle = new Vehicle();
+            $vehicle->description = $request->description;
+            $vehicle->year = $request->year;
+            $vehicle->make = $request->make;
+            $vehicle->capacity = $request->capacity;
             $vehicle->save();
 
             return Response($vehicle, Response::HTTP_OK);

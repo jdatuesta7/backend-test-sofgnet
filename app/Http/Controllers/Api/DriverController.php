@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
 use Exception;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class DriverController extends Controller
@@ -18,10 +20,10 @@ class DriverController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'last_name' => 'required|string',
                 'first_name' => 'required|string',
-                'ssd' => 'required|string|unique:drivers',
+                'ssd' => 'required|unique:drivers',
                 'dob' => 'required|date',
                 'address' => 'string|nullable',
                 'city' => 'string|nullable',
@@ -29,15 +31,19 @@ class DriverController extends Controller
                 'phone' => 'integer|nullable'
             ]);
 
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
             $driver = new Driver();
-            $driver->last_name = $validated['last_name'];
-            $driver->first_name = $validated['first_name'];
-            $driver->ssd = $validated['ssd'];
-            $driver->dob = $validated['dob'];
-            $driver->address = $validated['address'];
-            $driver->city = $validated['city'];
-            $driver->zip = $validated['zip'];
-            $driver->phone = $validated['phone'];
+            $driver->last_name = $request->last_name;
+            $driver->first_name = $request->first_name;
+            $driver->ssd = $request->ssd;
+            $driver->dob = $request->dob;
+            $driver->address = $request->address;
+            $driver->city = $request->city;
+            $driver->zip = $request->zip;
+            $driver->phone = $request->phone;
             $driver->save();
 
             return Response($driver, Response::HTTP_CREATED);
@@ -49,7 +55,7 @@ class DriverController extends Controller
     public function index()
     {
         try {
-            $drivers = Driver::all();
+            $drivers = Driver::where('active', DRIVER::PUBLISH)->get();
             return Response($drivers, Response::HTTP_OK);
         } catch (Exception $e) {
             return response(['error' => $e->getMessage()], 500);
@@ -69,10 +75,10 @@ class DriverController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'last_name' => 'required|string',
                 'first_name' => 'required|string',
-                'ssd' => 'required|string|unique:drivers',
+                'ssd' => ['required', Rule::unique('drivers', 'ssd')->ignore($id)],
                 'dob' => 'required|date',
                 'address' => 'string|nullable',
                 'city' => 'string|nullable',
@@ -80,15 +86,19 @@ class DriverController extends Controller
                 'phone' => 'integer|nullable'
             ]);
 
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
             $driver = Driver::findOrFail($id);
-            $driver->last_name = $validated['last_name'];
-            $driver->first_name = $validated['first_name'];
-            $driver->ssd = $validated['ssd'];
-            $driver->dob = $validated['dob'];
-            $driver->address = $validated['address'];
-            $driver->city = $validated['city'];
-            $driver->zip = $validated['zip'];
-            $driver->phone = $validated['phone'];
+            $driver->last_name = $request->last_name;
+            $driver->first_name = $request->first_name;
+            $driver->ssd = $request->ssd;
+            $driver->dob = $request->dob;
+            $driver->address = $request->address;
+            $driver->city = $request->city;
+            $driver->zip = $request->zip;
+            $driver->phone = $request->phone;
             $driver->save();
             
             return Response($driver, Response::HTTP_OK);

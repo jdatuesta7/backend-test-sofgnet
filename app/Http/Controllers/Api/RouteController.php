@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DriverVehicle;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class RouteController extends Controller
@@ -18,7 +19,7 @@ class RouteController extends Controller
     public function index()
     {
         try {
-            $routes = DriverVehicle::all();
+            $routes = DriverVehicle::where('active', DriverVehicle::PUBLISH)->get();
             return Response($routes, Response::HTTP_OK);
         } catch (Exception $e) {
             return Response(['error' => $e->getMessage()], 500);
@@ -28,16 +29,20 @@ class RouteController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'description' => 'string|required',
                 'driver_id' => 'integer|required',
                 'vehicle_id' => 'integer|required'
             ]);
 
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
             $route = DriverVehicle::create([
-                'description' => $validated['description'],
-                'driver_id' => $validated['driver_id'],
-                'vehicle_id' => $validated['vehicle_id'],
+                'description' => $request->description,
+                'driver_id' => $request->driver_id,
+                'vehicle_id' => $request->vehicle_id,
             ]);
 
             return Response($route, Response::HTTP_CREATED);    
@@ -59,16 +64,20 @@ class RouteController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'description' => 'string|required',
                 'driver_id' => 'integer|required',
                 'vehicle_id' => 'integer|required'
             ]);
 
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
             $route = DriverVehicle::findOrFail($id);
-            $route->description = $validated['description'];
-            $route->driver_id = $validated['driver_id'];
-            $route->vehicle_id = $validated['vehicle_id'];
+            $route->description = $request->description;
+            $route->driver_id = $request->driver_id;
+            $route->vehicle_id = $request->vehicle_id;
             $route->save();
 
             return Response($route, Response::HTTP_OK);

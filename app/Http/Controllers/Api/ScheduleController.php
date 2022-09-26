@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Schedule;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class ScheduleController extends Controller
@@ -18,18 +19,22 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'route_id' => 'required|integer',
                 'week_num' => 'required|integer',
                 'from' => 'required|date',
                 'to' => 'required|date',
             ]);
 
+            if ($validator->fails()) {
+                return Response(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            }
+
             $schedule = new Schedule();
-            $schedule->route_id = $validated['route_id'];
-            $schedule->week_num = $validated['week_num'];
-            $schedule->from = $validated['from'];
-            $schedule->to = $validated['to'];
+            $schedule->route_id = $request->route_id;
+            $schedule->week_num = $request->week_num;
+            $schedule->from = $request->from;
+            $schedule->to = $request->to;
             $schedule->save();
 
             return Response($schedule, Response::HTTP_CREATED);
