@@ -45,4 +45,5 @@ Route::group(['middleware' => 'api'], function(){
     Route::delete('routes/{route}', [RouteController::class, 'delete']);
 
     Route::post('schedules', [ScheduleController::class, 'store']);
+    Route::get('schedules/{route}', [ScheduleController::class, 'showRouteSchedules']);
 });
