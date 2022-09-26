@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DriverVehicle;
 use App\Models\Schedule;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class ScheduleController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     public function store(Request $request)
     {
         try {
@@ -38,6 +39,16 @@ class ScheduleController extends Controller
             $schedule->save();
 
             return Response($schedule, Response::HTTP_CREATED);
+        } catch (Exception $e) {
+            return Response(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function showRouteSchedules($route)
+    {
+        try {
+            $schedules = Schedule::where('route_id', $route)->get();
+            return Response($schedules, Response::HTTP_OK);
         } catch (Exception $e) {
             return Response(['error' => $e->getMessage()], 500);
         }
